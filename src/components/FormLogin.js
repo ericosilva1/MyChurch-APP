@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import apiUtils from '../utils/api.utils'
+import Signup from '../pages/Signup'
 
 
 const theme = createTheme();
@@ -94,9 +94,9 @@ export default function LogIn() {
             </Button>
             <Grid container>
               <Grid item>
-                {/* <Link to="/signup" element={<SignUp />} >
+                <Link to="/signup" element={<Signup />} >
                   {"Don't have an account? Sign Up"}
-                </Link> */}
+                </Link>
               </Grid>
             </Grid>
           </Box>

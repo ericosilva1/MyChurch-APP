@@ -46,6 +46,18 @@ class Api {
   };
 
 
+  signup = async (user) => {
+    try {
+      const { data } = await this.api.post('/auth/signup', user);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      return data;
+    } catch (error) {
+      throw error.response;
+    }
+  }
+
+
 }
 
 
