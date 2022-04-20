@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
+import LogIn from './components/FormLogin';
 
 
 function App() {
   return (
    <>
      <Routes>
-       <Route path="" element={} />
+       <Route path="/login" element={<LogIn />} />
      </Routes>
    </>
   );
