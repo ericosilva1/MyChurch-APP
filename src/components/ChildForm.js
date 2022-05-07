@@ -1,39 +1,42 @@
 import React, { useState } from "react";
-import Login from "../pages/Login";
 import apiUtils from "../utils/api.utils";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Autocomplete from "@mui/material/Autocomplete";
+import Navbar from "./Navbar";
 
 const theme = createTheme();
+const genders = ["", "Male", "Female"];
+const ages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function ChildForm() {
+  const [age, setAge] = useState("");
   const [name, setName] = useState("");
+  const [gender, setGender] = useState(genders[0]);
 
   const navigate = useNavigate();
 
   const resetForm = () => {
-    setEmail("");
-    setPassword("");
+    setAge("");
+    setGender("");
     setName("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await apiUtils.signup({ email, password, name });
+      await apiUtils.addChild({ age, gender, name });
       resetForm();
-      navigate("/login");
+      navigate("/private/user");
     } catch (error) {
       console.log(error.status);
     }
@@ -41,6 +44,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,10 +56,10 @@ export default function SignUp() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <LockOutlinedIcon />
+            <ChildCareOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Child
           </Typography>
           <Box
             component="form"
@@ -78,28 +82,39 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Autocomplete
+                  disablePortal
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="age"
+                  name="age"
+                  value={age}
+                  onChange={(e, newAge) => {
+                    setAge(e.target.value);
+                    setAge(newAge);
+                  }}
+                  options={ages}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Child's Age" />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Autocomplete
+                  disablePortal
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  id="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={(e, newGender) => {
+                    setGender(e.target.value);
+                    setGender(newGender);
+                  }}
+                  options={genders}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Gender" />
+                  )}
                 />
               </Grid>
             </Grid>
@@ -109,15 +124,8 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Submit
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/" element={<Login />}>
-                  {"Already have an account? Log in"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>

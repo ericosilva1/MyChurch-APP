@@ -1,8 +1,8 @@
-import React from 'react'
-import FormLogin from '../components/FormLogin'
+import React from "react";
+import FormLogin from "../components/FormLogin";
 
 function Login() {
-  return (<FormLogin />)
+  return <FormLogin />;
 }
 
-export default Login
+export default Login;

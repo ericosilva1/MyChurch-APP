@@ -1,39 +1,41 @@
 import React, { useState } from "react";
-import Login from "../pages/Login";
 import apiUtils from "../utils/api.utils";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Autocomplete from "@mui/material/Autocomplete";
+import Navbar from "./Navbar";
 
 const theme = createTheme();
+const ages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function RoomForm() {
   const [name, setName] = useState("");
+  const [minAge, setMinAge] = useState(ages[0]);
+  const [maxAge, setMaxAge] = useState(ages[11]);
 
   const navigate = useNavigate();
 
   const resetForm = () => {
-    setEmail("");
-    setPassword("");
+    setMinAge(ages[0]);
+    setMaxAge(ages[11]);
     setName("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await apiUtils.signup({ email, password, name });
+      await apiUtils.addRoom({ maxAge, minAge, name });
       resetForm();
-      navigate("/login");
+      navigate("/private/rooms");
     } catch (error) {
       console.log(error.status);
     }
@@ -41,6 +43,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,10 +55,10 @@ export default function SignUp() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <LockOutlinedIcon />
+            <HomeOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Room
           </Typography>
           <Box
             component="form"
@@ -77,29 +80,41 @@ export default function SignUp() {
                   onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12}>
-                <TextField
+                <Autocomplete
+                  disablePortal
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="minAge"
+                  name="minAge"
+                  value={minAge}
+                  onChange={(e, newMinAge) => {
+                    setMinAge(e.target.value);
+                    setMinAge(newMinAge);
+                  }}
+                  options={ages}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Min Age" />
+                  )}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Autocomplete
+                  disablePortal
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  id="maxAge"
+                  name="maxAge"
+                  value={maxAge}
+                  onChange={(e, newMaxAge) => {
+                    setMaxAge(e.target.value);
+                    setMaxAge(newMaxAge);
+                  }}
+                  options={ages}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Max Age" />
+                  )}
                 />
               </Grid>
             </Grid>
@@ -109,15 +124,8 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Submit
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/" element={<Login />}>
-                  {"Already have an account? Log in"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
