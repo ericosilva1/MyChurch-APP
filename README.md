@@ -3,7 +3,7 @@
 It is an application aimed at organizing the reception of children at Sunday Bible school.
 
 ## Log In
-[MyChurch]() - You will be directed to the login page. If you still don't have an account, click on [Don't have an account? Sign Up]()
+[MyChurch](https://dreamy-halva-378ae1.netlify.app/) - You will be directed to the login page. If you still don't have an account, click on [Don't have an account? Sign Up]()
 
 ## Sign Up
 [Sign Up]() - To register you enter your name, a valid email and create a password.

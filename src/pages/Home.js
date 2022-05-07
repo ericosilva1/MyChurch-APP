@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ChildList from "../components/ChildList";
 import apiUtils from "../utils/api.utils";
@@ -11,7 +11,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const getAllCchildren = async () => {
+  const getAllCchildren = useCallback(async () => {
     try {
       const children = await apiUtils.getChildren();
       setChildren(children);
@@ -19,11 +19,11 @@ const Home = () => {
       console.error(error.status, error.message);
       navigate("/login");
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     getAllCchildren();
-  }, []);
+  }, [getAllCchildren]);
 
   return (
     <>

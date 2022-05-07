@@ -26,20 +26,21 @@ export default function EditChild() {
   const navigate = useNavigate();
   const { childId } = useParams();
 
-  const getOneChild = async () => {
-    try {
-      const oneChild = await apiUtils.getChild(childId);
-      setAge(oneChild.age);
-      setName(oneChild.name);
-      setGender(oneChild.gender);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ 
 
   useEffect(() => {
+    const getOneChild = async () => {
+      try {
+        const oneChild = await apiUtils.getChild(childId);
+        setAge(oneChild.age);
+        setName(oneChild.name);
+        setGender(oneChild.gender);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     getOneChild();
-  }, []);
+  }, [childId]);
 
   const resetForm = () => {
     setAge("");
